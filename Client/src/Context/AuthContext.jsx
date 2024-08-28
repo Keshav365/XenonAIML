@@ -10,7 +10,7 @@ export const AuthContextProvider = ({ children }) => {
 
   const login = async (inputs) => {
     try {
-      const res = await axios.post("https://sicksick.azurewebsites.net/api/auths/login", inputs, {
+      const res = await axios.post("https://homiwise.azurewebsites.net/api/auths/login", inputs, {
         withCredentials: true,
       });
       setCurrentUser(res.data);
@@ -23,7 +23,7 @@ export const AuthContextProvider = ({ children }) => {
 
   const logout = async (navigate) => {
     try {
-      await axios.post("https://sicksick.azurewebsites.net/api/auths/logout", {}, { withCredentials: true });
+      await axios.post("https://homiwise.azurewebsites.net/api/auths/logout", {}, { withCredentials: true });
       setCurrentUser(null);
       localStorage.removeItem("user");
       if (navigate) {

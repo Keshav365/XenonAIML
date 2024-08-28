@@ -167,7 +167,10 @@
 }
 
 
-
+.form-button:nth-child() {
+    background-color: #fac5c5;
+    color: #a90f2e;
+}
 
 .form-button:hover {
     /* box-shadow: 1px 0px 8px rgba(48, 162, 69, 0.5); */

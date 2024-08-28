@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import './CSS/card.css';
 
-export default function UpdateTaskForm({ taskId, onClose, onUpdateTask, userId,fetchTasks }) {
+export default function TaskForm({ onClose, onAddTask, userId, fetchTasks}) {
   const [nameLength, setNameLength] = useState(0);
   const [descLength, setDescLength] = useState(0);
   const [task, setTask] = useState({
@@ -13,31 +13,6 @@ export default function UpdateTaskForm({ taskId, onClose, onUpdateTask, userId,f
     startDate: '',
     endDate: ''
   });
-
-  console.log('Updating task with ID:', taskId);
-
-  useEffect(() => {
-    const fetchTask = async () => {
-      try {
-        const res = await axios.get(`https://homiwise.azurewebsites.net/api/tasks?id=${taskId}&userId=${userId}`);
-        const fetchedTask = res.data;
-
-        // Format the startDate and endDate if they are present
-        setTask({
-          ...fetchedTask,
-          startDate: fetchedTask.start_date ? fetchedTask.start_date.split('T')[0] : '', // YYYY-MM-DD for input type="date"
-          endDate: fetchedTask.end_date ? fetchedTask.end_date.slice(0, 16) : '', // YYYY-MM-DDTHH:MM for input type="datetime-local"
-        });
-        setNameLength(fetchedTask.name.length);
-        setDescLength(fetchedTask.description.length);
-        fetchTasks()
-      } catch (error) {
-        console.log('Error fetching task:', error);
-      }
-    };
-
-    fetchTask();
-  }, [taskId, userId]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -55,22 +30,32 @@ export default function UpdateTaskForm({ taskId, onClose, onUpdateTask, userId,f
     e.preventDefault();
     const taskWithUserId = { ...task, userId };
 
+    // Log the task object before sending it
+    console.log('Task object being sent:', taskWithUserId);
+
     try {
-      const res = await axios.put(`https://homiwise.azurewebsites.net/api/tasks/${taskId}`, taskWithUserId);
-      onUpdateTask(res.data);
+      const res = await axios.post('https://homiwise.azurewebsites.net/api/tasks', taskWithUserId);
+      console.log('Response from server:', res.data);
+      onAddTask(res.data); // Use the data returned from the server
       onClose();
-      fetchTasks()
-    } catch (error) {
-      console.log('Error updating task:', error);
+      fetchTasks(); 
+    }catch (error) {
+      console.log('Error adding task:', error);
       if (error.response) {
         console.log('Error response data:', error.response.data);
+        console.log('Error response status:', error.response.status);
+        console.log('Error response headers:', error.response.headers);
+      } else if (error.request) {
+        console.log('Error request data:', error.request);
+      } else {
+        console.log('Error message:', error.message);
       }
     }
   };
 
   return (
     <div className="loginDiv">
-      <h3 className="text-whitesmoke">Update Task</h3>
+      <h3 className="text-whitesmoke">Add New Task</h3>
       <div className="container-content">
         <form onSubmit={handleSubmit}>
           <div>
@@ -127,8 +112,6 @@ export default function UpdateTaskForm({ taskId, onClose, onUpdateTask, userId,f
                 value={task.tag}
                 required
               >
-                {console.log(task.startDate)}
-                {console.log(task.endDate)}
                 <option value="">Select Status</option>
                 <option value="assigned">Assigned</option>
                 <option value="approved">Approved</option>
@@ -159,7 +142,7 @@ export default function UpdateTaskForm({ taskId, onClose, onUpdateTask, userId,f
               />
             </div>
           </div>
-          <button type="submit" className="form-button button-l margin-b">Update Task</button>
+          <button type="submit" className="form-button button-l margin-b">Add Task</button>
           <button type="button" className="form-button button-l margin-b" onClick={onClose}>Cancel</button>
         </form>
       </div>

@@ -12,7 +12,6 @@ export default function Signup() {
 
   const [passwordMatch, setPasswordMatch] = useState(true);
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false); // State for loading
   const navigate = useNavigate(); // Use useNavigate hook
 
   const handleChange = (e) => {
@@ -30,11 +29,10 @@ export default function Signup() {
       alert('Passwords do not match');
       return;
     }
-    setLoading(true); // Start loading
     try {
-      await axios.post("https://sicksick.azurewebsites.net/api/auths/register", inputs);
+      await axios.post("https://homiwise.azurewebsites.net/api/auths/register", inputs);
       console.log('Form submitted');
-      navigate("/"); // Navigate to home page after successful signup
+      navigate("/login"); // Navigate to home page after successful signup
     } catch (err) {
       const errorMessage = err.response?.data || 'An error occurred';
       setError(errorMessage);
@@ -43,8 +41,6 @@ export default function Signup() {
       setTimeout(() => {
         setError("");
       }, 5000);
-    } finally {
-      setLoading(false); // Stop loading
     }
   };
 
@@ -118,13 +114,13 @@ export default function Signup() {
               <button
                 type="submit"
                 className="form-button button-l margin-b"
-                disabled={!passwordMatch || loading} // Disable button when loading or if passwords do not match
+                disabled={!passwordMatch}
               >
-                {loading ? "Signing up..." : "Sign Up"} {/* Show loading text */}
+                Sign Up
               </button>
             </div>
             <p className="text-whitesmoke text-center">
-              Already have an account? <Link to="/">Sign In</Link>
+              Already have an account? <Link to="/login">Sign In</Link>
             </p>
           </form>
           <p className="margin-t text-whitesmoke">HomiWise &copy; 2024</p>

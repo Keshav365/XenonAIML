@@ -125,6 +125,11 @@
     margin: 0 auto;
 }
 
+.form-button:nth-child() {
+    background-color: #fac5c5;
+    color: #a90f2e;
+}
+
 .form-button:hover .loginDiv {
     box-shadow: 1px 0px 8px rgba(162, 48, 92, 0.5);
 }
@@ -221,7 +226,7 @@ h3 {
 .closebtn:hover {
     color: black;
 }
-/* 
+
 @media screen and (max-width: 500px) {
 
     .topCover,
@@ -236,17 +241,21 @@ h3 {
         top: 0;
         left: 0;
         transform: translate(0, 0);
+        /* Centering trick */
         padding: 0;
         border-radius: 0;
         margin: 0;
         box-shadow: unset;
+        /* Adjust shadow as needed */
         width: 100%;
         max-width: 100%;
         height: 50%;
+        /* width: 90%; */
+        /* Adjust width as needed */
         text-align: center;
 
         * {
             background-color: unset;
         }
     }
-} */
+}
