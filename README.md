@@ -30,11 +30,11 @@ Follow these steps to get the backend server up and running:
 ### 1. Install Dependencies
 ```bash
 npm install
-
+```
 ### 2. Run the server
 ```bash
 Nodemon Start
-
+```
 # 🌟 HomiWise - Frontend (🔥FireBase)
 
 The HomiWise frontend application provides a seamless user experience for browsing and managing properties. Built with React and deployed using Firebase, it offers a range of features and functionalities.
